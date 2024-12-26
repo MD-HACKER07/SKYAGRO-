@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sky Agro Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .claymorphism {
+            background: #e0e0e0;
+            border-radius: 16px;
+            box-shadow: 5px 5px 10px #bebebe,
+                -5px -5px 10px #ffffff;
+        }
+
+        .nav-item.active {
+            background: #ffffff;
+            box-shadow: inset 5px 5px 10px #bebebe,
+                inset -5px -5px 10px #ffffff;
+        }
+
+        .status-light-blue {
+            background-color: #add8e6;
+        }
+
+        .status-yellow {
+            background-color: #ffeb3b;
+        }
+
+        .status-orange {
+            background-color: #ffa726;
+        }
+
+        .status-green {
+            background-color: #66bb6a;
+        }
+
+        .status-brown {
+            background-color: #8d6e63;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+
+    <div id="dashboard" class="flex h-screen">
+
+        <div class="w-64 bg-white claymorphism m-4 p-4 h-[calc(100vh-2rem)]">
+            <div class="flex items-center space-x-2 mb-8">
+                <i class="bi bi-building text-2xl"></i>
+                <h1 class="text-xl font-bold">Sky Agro</h1>
+            </div>
+
+            <nav class="space-y-2">
+                <div class="nav-item claymorphism p-3 cursor-pointer" data-tab="orders">
+                    <i class="bi bi-cart"></i> Orders
+                </div>
+                <div class="nav-item claymorphism p-3 cursor-pointer" data-tab="dealers">
+                    <i class="bi bi-people"></i> Dealers
+                </div>
+                <div class="nav-item claymorphism p-3 cursor-pointer" data-tab="products">
+                    <i class="bi bi-box"></i> Products
+                </div>
+                <div class="nav-item claymorphism p-3 cursor-pointer" data-tab="reports">
+                    <i class="bi bi-file-text"></i> Reports
+                </div>
+                <div class="nav-item claymorphism p-3 cursor-pointer" data-tab="settings">
+                    <i class="bi bi-gear"></i> Settings
+                </div>
+            </nav>
+        </div>
+
+       
+        <div class="flex-1 p-4 overflow-auto">
+       
+            <div id="ordersTab" class="tab-content">
+                <div class="claymorphism p-6">
+                    <h2 class="text-2xl font-bold mb-4">Orders Management</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-4">
+                        <div class="claymorphism p-4 text-center">
+                            <div class="status-light-blue w-4 h-4 rounded-full mx-auto mb-2"></div>
+                            <p>Order In</p>
+                        </div>
+                        <div class="claymorphism p-4 text-center">
+                            <div class="status-yellow w-4 h-4 rounded-full mx-auto mb-2"></div>
+                            <p>Approved</p>
+                        </div>
+                        <div class="claymorphism p-4 text-center">
+                            <div class="status-orange w-4 h-4 rounded-full mx-auto mb-2"></div>
+                            <p>In Production</p>
+                        </div>
+                        <div class="claymorphism p-4 text-center">
+                            <div class="status-green w-4 h-4 rounded-full mx-auto mb-2"></div>
+                            <p>Dispatched</p>
+                        </div>
+                        <div class="claymorphism p-4 text-center">
+                            <div class="status-brown w-4 h-4 rounded-full mx-auto mb-2"></div>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left">
+                                    <th class="p-2">Order ID</th>
+                                    <th class="p-2">Dealer</th>
+                                    <th class="p-2">Products</th>
+                                    <th class="p-2">Total</th>
+                                    <th class="p-2">Status</th>
+                                    <th class="p-2">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersList">
+                     
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+       
+            <div id="dealersTab" class="tab-content hidden">
+                <div class="claymorphism p-6">
+                    <h2 class="text-2xl font-bold mb-4">Dealer Management</h2>
+                    <button class="claymorphism bg-blue-500 text-white px-4 py-2 rounded mb-4">
+                        Add New Dealer
+                    </button>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+               
+                    </div>
+                </div>
+            </div>
+
+            <div id="productsTab" class="tab-content hidden">
+                <div class="claymorphism p-6">
+                    <h2 class="text-2xl font-bold mb-4">Products Management</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      
+                    </div>
+                </div>
+            </div>
+
+       
+            <div id="reportsTab" class="tab-content hidden">
+                <div class="claymorphism p-6">
+                    <h2 class="text-2xl font-bold mb-4">Reports & Analytics</h2>
+                   
+                </div>
+            </div>
+
+        
+            <div id="settingsTab" class="tab-content hidden">
+                <div class="claymorphism p-6">
+                    <h2 class="text-2xl font-bold mb-4">System Settings</h2>
+             
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const navItems = document.querySelectorAll('.nav-item');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(nav => nav.classList.remove('active'));
+
+                
+                item.classList.add('active');
+
+                tabContents.forEach(tab => tab.classList.add('hidden'));
+
+                const tabId = item.getAttribute('data-tab') + 'Tab';
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+
+        const orders = [
+            {
+                id: "ORD001",
+                dealer: "MD Traders",
+                products: "Product A, Product B",
+                total: "₹25,000",
+                status: "Order In"
+            },
+            {
+                id: "ORD002",
+                dealer: "XYZ Enterprise",
+                products: "Product C",
+                total: "₹15,000",
+                status: "In Production"
+            }
+        ];
+
+    
+        const ordersList = document.getElementById('ordersList');
+        orders.forEach(order => {
+            const statusClass = {
+                "Order In": "status-light-blue",
+                "Approved": "status-yellow",
+                "In Production": "status-orange",
+                "Dispatched": "status-green",
+                "Completed": "status-brown"
+            }[order.status];
+
+            ordersList.innerHTML += `
+                <tr class="border-t">
+                    <td class="p-2">${order.id}</td>
+                    <td class="p-2">${order.dealer}</td>
+                    <td class="p-2">${order.products}</td>
+                    <td class="p-2">${order.total}</td>
+                    <td class="p-2">
+                        <span class="${statusClass} px-2 py-1 rounded text-sm">
+                            ${order.status}
+                        </span>
+                    </td>
+                    <td class="p-2">
+                        <button class="claymorphism p-1 rounded">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+    </script>
+</body>
+
+</html>
