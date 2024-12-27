@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Receipt Module</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl">
+        <h1 class="text-2xl font-bold text-center mb-6">Order Receipt</h1>
+        
+        <!-- Receipt Header -->
+        <div class="mb-4">
+            <div class="flex justify-between">
+                <div>
+                    <p class="font-semibold">Receipt Number: <span id="receiptNumber" class="text-gray-700">SKY-ORD-2023-001</span></p>
+                    <p class="font-semibold">Timestamp: <span id="timestamp" class="text-gray-700"></span></p>
+                </div>
+                <div>
+                    <p class="font-semibold">Status: <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded">Order Received</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dealer Details -->
+        <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2">Dealer Details</h2>
+            <p class="text-gray-700">Dealer Name: <span id="dealerName">-</span></p>
+            <p class="text-gray-700">Payment Mode: <span id="paymentMode">-</span></p>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2">Order Summary</h2>
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2">Product</th>
+                        <th class="border border-gray-300 px-4 py-2">Specifications</th>
+                        <th class="border border-gray-300 px-4 py-2">Quantity</th>
+                        <th class="border border-gray-300 px-4 py-2">Unit Price</th>
+                        <th class="border border-gray-300 px-4 py-2">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="orderSummary">
+                    <!-- Rows will be dynamically added here -->
+                </tbody>
+                <tfoot>
+                    <tr class="bg-gray-100">
+                        <td colspan="4" class="border border-gray-300 px-4 py-2 font-bold text-right">Total Value</td>
+                        <td id="totalValue" class="border border-gray-300 px-4 py-2 font-bold text-right">₹0</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- Remarks -->
+        <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2">Remarks / Special Instructions</h2>
+            <p class="text-gray-700" id="remarks">-</p>
+        </div>
+
+        <!-- QR Code -->
+        <div class="mb-6 flex justify-center">
+            <div id="qrCodeContainer" class="border border-gray-300 p-4 flex flex-col items-center">
+                <p class="text-sm text-gray-600 mb-2">Scan this QR Code for order details</p>
+                <img id="qrCode" src="image/Scan Me.png" alt="QR Code" class="w-32 h-32">
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-between">
+            <button class="no-print bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onclick="window.print()">Print Receipt</button>
+            <button class="no-print bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" onclick="savePDF()">Save as PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // Fetch order data from localStorage
+        const orderData = JSON.parse(localStorage.getItem("orderData"));
+
+        function populateReceipt() {
+            if (!orderData) {
+                alert("No order data found. Redirecting to confirm order page.");
+                window.location.href = "confirmorder.html";
+                return;
+            }
+
+            // Populate timestamp
+            const timestamp = new Date().toLocaleString();
+            document.getElementById("timestamp").innerText = timestamp;
+
+            // Populate dealer details
+            document.getElementById("dealerName").innerText = orderData.dealerName || "-";
+            document.getElementById("paymentMode").innerText = orderData.paymentMode || "-";
+
+            // Populate remarks
+            document.getElementById("remarks").innerText = orderData.remarks || "-";
+
+            // Populate order summary
+            const orderSummary = document.getElementById("orderSummary");
+            orderSummary.innerHTML = ""; // Clear any existing rows
+
+            let totalValue = 0;
+            orderData.products.forEach(product => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="border border-gray-300 px-4 py-2">${product.productName}</td>
+                    <td class="border border-gray-300 px-4 py-2">${product.specifications}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">${product.quantity}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-right">₹${product.price.toFixed(2)}</td>
+                    <td class="border border-gray-300 px-4 py-2 text-right">₹${product.total.toFixed(2)}</td>
+                `;
+                orderSummary.appendChild(row);
+                totalValue += product.total;
+            });
+
+            // Update total value
+            document.getElementById("totalValue").innerText = `₹${totalValue.toFixed(2)}`;
+        }
+
+        function savePDF() {
+            alert("Save as PDF functionality coming soon.");
+        }
+
+        // Populate receipt on load
+        window.onload = populateReceipt;
+    </script>
+
+</body>
+</html>

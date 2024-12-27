@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #e0e5ec;
+            margin: 0;
+        }
+
+        .payment-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="payment-container">
+        <h1 class="text-2xl font-bold mb-4">Payment</h1>
+        <p class="mb-4">Proceed to pay for your items.</p>
+        <button class="clay-button w-full py-2" onclick="completePayment()">Pay Now</button>
+    </div>
+
+    <script>
+        function completePayment() {
+            alert('Payment successful!');
+            localStorage.removeItem('cart');
+            window.location.href = 'shoppingdemo.html';
+        }
+    </script>
+</body>
+
+</html>

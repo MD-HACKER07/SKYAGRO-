@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sky Agro Admin Portal</title>
+    <title>Welcome - Order Management Application</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <style>
         * {
             font-family: 'Poppins', sans-serif;
@@ -16,204 +14,179 @@
         .clay-card {
             background: #ffffff;
             border-radius: 20px;
-            padding: 20px;
-            box-shadow: 
+            padding: 20px; 
+            box-shadow:
                 8px 8px 16px #d1d9e6,
                 -8px -8px 16px #ffffff;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
         }
 
         .clay-button {
             background: linear-gradient(145deg, #e6e6e6, #ffffff);
-            box-shadow: 
+            box-shadow:
                 4px 4px 8px #d1d9e6,
                 -4px -4px 8px #ffffff;
             border-radius: 10px;
             transition: all 0.3s ease;
+            padding: 12px 20px;
+            font-weight: bold;
+            color: #333;
         }
 
         .clay-button:hover {
-            box-shadow: 
+            box-shadow:
                 inset 4px 4px 8px #d1d9e6,
                 inset -4px -4px 8px #ffffff;
+            background: #e6e6e6;
         }
 
-        .clay-input {
-            background: #f0f0f3;
+        .dropdown-menu {
+            position: absolute;
+            background: white;
             border-radius: 10px;
-            padding: 12px;
-            box-shadow: 
-                inset 2px 2px 5px #d1d9e6,
-                inset -2px -2px 5px #ffffff;
+            box-shadow:
+                4px 4px 8px #d1d9e6,
+                -4px -4px 8px #ffffff;
+            display: none;
+            width: 220px;
+            text-align: left;
+            z-index: 10;
+            animation: slideDown 0.3s ease-in-out;
         }
 
-        .active-nav {
-            background: linear-gradient(145deg, #e6e6e6, #ffffff);
-            box-shadow: 
-                inset 4px 4px 8px #d1d9e6,
-                inset -4px -4px 8px #ffffff;
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background: #f5f5f5;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .leaf {
+            position: absolute;
+            top: -100px;
+            width: 50px; 
+            height: 50px; 
+            background-image: url('image/download.png');
+            background-size: cover;
+            animation: fall linear infinite;
+        }
+
+        .animate-text {
+            animation: textAnimation 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textAnimation {
+            from {
+                color: #333;
+                transform: scale(1);
+            }
+            to {
+                color: #ff6347;
+                transform: scale(1.1);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .clay-card {
+                padding: 20px; /* Adjust padding for mobile */
+            }
+
+            .clay-button {
+                padding: 10px 15px; /* Adjust button padding for mobile */
+            }
+
+            .dropdown-menu {
+                width: 180px; /* Adjust dropdown width for mobile */
+            }
+
+            .dropdown-item {
+                padding: 10px 12px; /* Adjust dropdown item padding for mobile */
+            }
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    
-    <div id="loginContainer" class="flex items-center justify-center min-h-screen p-4">
-        <div class="clay-card w-full max-w-md">
-            <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-800">Sky Agro</h2>
-                <p class="text-gray-600"> Shopping Dashboard</p>
-            </div>
-            <form id="loginForm" class="space-y-6">
-                <div>
-                    <label class="block text-gray-700 mb-2">Username</label>
-                    <input type="text" id="username" class="clay-input w-full" required>
-                </div>
-                <div>
-                    <label class="block text-gray-700 mb-2">Password</label>
-                    <input type="password" id="password" class="clay-input w-full" required>
-                </div>
-                <div>
-                    <label class="block text-gray-700 mb-2">Role</label>
-                    <select id="role" class="clay-input w-full">
-                        <option value="admin">Admin</option>
-                        <option value="marketing">Marketing Executive</option>
-                        <option value="dealer">Dealer</option>
-                        <option value="accounts">Accounts Coordinator</option>
-                        <option value="production">Production Manager</option>
-                        <option value="shopping">Shopping Dashboard</option>
-                    </select>
-                </div>
-                <button type="submit" class="clay-button w-full py-3 text-gray-800 font-medium">Login</button>
-                <p class="text-center text-sm text-gray-600">
-                    <a href="#" class="text-blue-600 hover:underline">Forgot Password?</a>
-                </p>
-            </form>
-        </div>
-    </div>
-
-    
-    <div id="dashboardContainer" class="hidden">
-        
-        <div class="flex h-screen">
-            <div class="clay-card w-64 flex flex-col p-4 m-4 rounded-xl">
-                <div class="mb-8">
-                    <h2 class="text-xl font-bold text-gray-800">Sky Agro</h2>
-                    <p id="userRole" class="text-sm text-gray-600"></p>
-                </div>
-                <nav class="flex-1">
-                    <ul class="space-y-2">
-                        <li>
-                            <button class="clay-button w-full p-3 text-left nav-item" data-section="dashboard">
-                                <i class="bi bi-grid mr-2"></i> Dashboard
-                            </button>
-                        </li>
-                        <li>
-                            <button class="clay-button w-full p-3 text-left nav-item" data-section="orders">
-                                <i class="bi bi-cart mr-2"></i> Orders
-                            </button>
-                        </li>
-                        <li>
-                            <button class="clay-button w-full p-3 text-left nav-item" data-section="dealers">
-                                <i class="bi bi-people mr-2"></i> Dealers
-                            </button>
-                        </li>
-                        <li>
-                            <button class="clay-button w-full p-3 text-left nav-item" data-section="products">
-                                <i class="bi bi-box mr-2"></i> Products
-                            </button>
-                        </li>
-                        <li>
-                            <button class="clay-button w-full p-3 text-left nav-item" data-section="reports">
-                                <i class="bi bi-file-text mr-2"></i> Reports
-                            </button>
-                        </li>
-                        <li>
-                            <button class="clay-button w-full p-3 text-left nav-item" data-section="Shopping">
-                                <i class="bi bi-grid mr-2"></i> Shopping
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
-                <button id="logoutBtn" class="clay-button w-full p-3 mt-4">
-                    <i class="bi bi-box-arrow-right mr-2"></i> Logout
-                </button>
-            </div>
-
-            
-            <div class="flex-1 p-4 overflow-auto">
-                <div id="dashboard-section" class="section">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <div class="clay-card">
-                            <h3 class="text-lg font-semibold mb-2">Pending Orders</h3>
-                            <p class="text-3xl font-bold">24</p>
-                        </div>
-                        <div class="clay-card">
-                            <h3 class="text-lg font-semibold mb-2">Active Dealers</h3>
-                            <p class="text-3xl font-bold">156</p>
-                        </div>
-                        <div class="clay-card">
-                            <h3 class="text-lg font-semibold mb-2">Total Revenue</h3>
-                            <p class="text-3xl font-bold">₹45,67,890</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="orders-section" class="section hidden">
-                    
-                </div>
-                <div id="dealers-section" class="section hidden">
-                    
-                </div>
-                <div id="products-section" class="section hidden">
-                    
-                </div>
-                <div id="reports-section" class="section hidden">
-                    
-                </div>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center relative overflow-hidden">
+    <div class="clay-card w-full max-w-4xl mx-4">
+        <img src="image/logo.jpg" alt="Sky Agro Logo" class="w-40 mx-auto mb-8 animate-bounce">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4 animate-text">Welcome to SKYAGRO</h1>
+        <p class="text-gray-600 text-lg mb-8 animate-text">
+            Empowering your agriculture and irrigation systems with precision, efficiency, and innovation. 
+            Explore our advanced Order Management Application tailored to streamline operations and drive success. 
+            Let's grow together, one step at a time.
+        </p>
+        <div class="dropdown inline-block relative">
+            <button class="clay-button px-8 py-3">Select Login</button>
+            <div class="dropdown-menu mt-2">
+                <a href="admin_login.html" class="dropdown-item">Admin Login</a>
+                <a href="shoppinglogin.html" class="dropdown-item">Shopping Dashboard</a>
+                <a href="marketlogin.html" class="dropdown-item">Marketing Executive</a>
+                <a href="Dispatchlogin.html" class="dropdown-item">Dispatch Coordinator</a>
+                <a href="productlogin.html" class="dropdown-item">Production Coordinator</a>
+                <a href="floorlogin.html" class="dropdown-item">Floor Coordinator</a>
+                <!-- <a href="dealer_login.html" class="dropdown-item">Dealer Login</a> -->
             </div>
         </div>
     </div>
-
+    <footer class="absolute bottom-4 w-full text-center text-gray-600">
+        Developed By Students Of Sanjivani University
+    </footer>
     <script>
-      
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const role = document.getElementById('role').value;
+        function createLeaf() {
+            const leaf = document.createElement('div');
+            leaf.classList.add('leaf');
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(leaf);
 
-           
-            if (username && password) {
-               
-                switch (role) {
-                    case 'admin':
-                        window.location.href = 'admin.html'; 
-                        break;
-                    case 'marketing':
-                        window.location.href = 'marketing.html'; 
-                        break;
-                    case 'dealer':
-                        window.location.href = 'dealer.html'; 
-                        break;
-                    case 'accounts':
-                        window.location.href = 'account.html'; 
-                        break;
-                    case 'production':
-                        window.location.href = 'production.html'; 
-                        break;
-                    case 'shopping':
-                        window.location.href = 'shopping.html'; 
-                        break;
-                    default:
-                       
-                        alert('Invalid role selected');
-                }
-            }
-        });
+            setTimeout(() => {
+                leaf.remove();
+            }, 5000);
+        }
 
-        
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            window.location.href = 'login.html'; 
-        });
+        setInterval(createLeaf, 500); 
     </script>
 </body>
 </html>

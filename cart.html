@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #e0e5ec;
+            margin: 0;
+        }
+
+        .header {
+            background-color: #0078D4;
+            color: #ffffff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: right;
+        }
+
+        .clay-button {
+            background: #ffffff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff;
+        }
+
+        .clay-button:hover {
+            background: #0078D4;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Your Cart</h1>
+        <a href="index.html" class="underline">Back to Shopping</a>
+    </div>
+
+    <div id="cart-items" class="p-4"></div>
+
+
+    <div class="cart-summary">
+        <span class="font-bold">Total: ₹</span><span id="cart-total">0.00</span>
+        <button class="clay-button mt-4" onclick="proceedToPayment()">Proceed to Payment</button>
+    </div>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotalElement = document.getElementById('cart-total');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                return;
+            }
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <img src="${item.imageUrl}" alt="${item.name}" class="w-16 h-16 rounded-md">
+                    <div>
+                        <h3 class="font-semibold">${item.name}</h3>
+                        <p class="text-gray-600">₹${item.price} x ${item.quantity}</p>
+                    </div>
+                    <button class="clay-button" onclick="removeFromCart('${item.name}')">Remove</button>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+
+            cartTotalElement.textContent = total.toFixed(2);
+        }
+
+        function removeFromCart(productName) {
+            const index = cart.findIndex(item => item.name === productName);
+            if (index !== -1) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+            }
+        }
+
+        function proceedToPayment() {
+            if (cart.length === 0) {
+                alert('Your cart is empty.');
+                return;
+            }
+            window.location.href = 'payment.html';
+        }
+
+        renderCart();
+    </script>
+</body>
+
+</html>

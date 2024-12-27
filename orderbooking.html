@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Booking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .clay-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 
+                8px 8px 16px #d1d9e6,
+                -8px -8px 16px #ffffff;
+        }
+
+        .clay-button {
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            box-shadow: 
+                4px 4px 8px #d1d9e6,
+                -4px -4px 8px #ffffff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .clay-button:hover {
+            box-shadow: 
+                inset 4px 4px 8px #d1d9e6,
+                inset -4px -4px 8px #ffffff;
+            background: #e6e6e6;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="clay-card w-full max-w-4xl">
+        <h1 class="text-2xl font-bold mb-4 text-center">Order Booking</h1>
+        <form id="orderForm" class="space-y-4">
+            <!-- Select Dealer -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Select Dealer</label>
+                <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                    <option>Select Dealer</option>
+                    <option>Dealer 1</option>
+                    <option>Dealer 2</option>
+                    <option>Dealer 3</option>
+                </select>
+            </div>
+
+            <!-- Product Selection -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Category</label>
+                    <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                        <option>Select Category</option>
+                        <option>Electronics</option>
+                        <option>Appliances</option>
+                        <option>Clothing</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Subcategory</label>
+                    <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                        <option>Select Subcategory</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Brand</label>
+                    <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                        <option>Select Brand</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Specifications</label>
+                    <input type="text" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Specifications" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Quantity</label>
+                    <input type="number" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Quantity" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Price</label>
+                    <input type="number" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Price" required>
+                </div>
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold mb-2">Cart Summary</h3>
+                <div id="cartItems" class="mb-4">
+                    <p class="text-gray-500 italic">No items in the cart.</p>
+                </div>
+                <button type="button" class="clay-button" onclick="addToCart()">Add to Cart</button>
+                <p class="text-right mt-4 font-bold text-gray-700">Total: <span id="totalValue">0</span></p>
+            </div>
+
+            <!-- Remarks -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Remarks / Special Instructions</label>
+                <textarea class="clay-input w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Enter any special instructions"></textarea>
+            </div>
+
+            <!-- Payment Mode -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Payment Mode</label>
+                <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                    <option>Select Payment Mode</option>
+                    <option>Cash</option>
+                    <option>Cheque</option>
+                    <option>Credit</option>
+                    <option>UPI</option>
+                </select>
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="clay-button w-full py-3">Submit Order</button>
+        </form>
+    </div>
+
+    <script>
+        let totalValue = 0;
+
+        function addToCart() {
+            const quantity = document.querySelector('input[placeholder="Enter Quantity"]').value;
+            const price = document.querySelector('input[placeholder="Enter Price"]').value;
+
+            if (quantity && price) {
+                const cartItems = document.getElementById('cartItems');
+                const itemTotal = quantity * price;
+                totalValue += itemTotal;
+
+                const itemRow = document.createElement('p');
+                itemRow.textContent = `Product - Quantity: ${quantity}, Price: ${price}, Total: ${itemTotal}`;
+                cartItems.appendChild(itemRow);
+
+                document.getElementById('totalValue').textContent = totalValue;
+            } else {
+                alert('Please fill in quantity and price.');
+            }
+        }
+    </script>
+</body>
+</html>
