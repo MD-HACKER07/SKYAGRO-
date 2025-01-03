@@ -16,44 +16,44 @@
             border-radius: 20px;
             padding: 20px;
             box-shadow: 8px 8px 16px #d1d9e6,
-                       -8px -8px 16px #f9f9f9;
+                       -8px -8px 16px #ffffff;
         }
         .clay-button {
             background: #e8ecf4;
             border-radius: 10px;
             padding: 8px 16px;
             box-shadow: 4px 4px 8px #d1d9e6,
-                       -4px -4px 8px #f9f9f9;
+                       -4px -4px 8px #ffffff;
             transition: all 0.3s ease;
+            color: #0078D4;
         }
         .clay-button:active {
             box-shadow: inset 4px 4px 8px #d1d9e6,
-                       inset -4px -4px 8px #f9f9f9;
+                       inset -4px -4px 8px #ffffff;
         }
         .clay-input {
             background: #e8ecf4;
             border-radius: 10px;
             padding: 8px 16px;
             box-shadow: inset 2px 2px 5px #d1d9e6,
-                       inset -2px -2px 5px #f9f9f9;
+                       inset -2px -2px 5px #ffffff;
         }
         .active-tab {
-            background: #e8ecf4;
+            background: #0078D4;
             box-shadow: inset 4px 4px 8px #d1d9e6,
-                       inset -4px -4px 8px #f9f9f9;
+                       inset -4px -4px 8px #ffffff;
+            color: white;
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="flex flex-col md:flex-row">
- 
         <div class="clay-card m-4 w-full md:w-64 h-auto md:h-screen">
             <div class="text-xl font-bold mb-8 text-center">SKY AGRO DEALER</div>
             <nav class="space-y-2">
                 <button onclick="switchTab('dashboard')" class="clay-button w-full text-left mb-2 active-tab">
                     <i class="bi bi-house-door mr-2"></i> Dashboard
                 </button>
-
                 <button onclick="switchTab('orders')" class="clay-button w-full text-left mb-2">
                     <i class="bi bi-cart mr-2"></i> Order Management
                 </button>
@@ -66,9 +66,7 @@
             </nav>
         </div>
 
-
         <div class="flex-1 p-4">
- 
             <div id="dashboard" class="tab-content">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div class="clay-card">
@@ -84,8 +82,7 @@
                         <p class="text-3xl font-bold">89</p>
                     </div>
                 </div>
-                
-          
+
                 <div class="clay-card">
                     <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
                     <div class="space-y-4">
@@ -107,42 +104,45 @@
                 </div>
             </div>
 
-        
+            <div id="orders" class="tab-content hidden">
+                <!-- Add Orders Content Here -->
+            </div>
+
+            <div id="reports" class="tab-content hidden">
+                <!-- Add Reports Content Here -->
+            </div>
+
+            <div id="settings" class="tab-content hidden">
+                <!-- Add Settings Content Here -->
+            </div>
         </div>
     </div>
-
     <script>
- 
         function switchTab(tabName) {
-       
             document.querySelectorAll('.clay-button').forEach(btn => {
                 btn.classList.remove('active-tab');
             });
-            
-        
+    
             event.target.classList.add('active-tab');
-  
+    
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.style.display = 'none';
             });
-            
-
+    
             document.getElementById(tabName).style.display = 'block';
         }
-
-   
+    
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('dashboard').style.display = 'block';
         });
-
-       
+    
         const appData = {
             dealers: [],
             products: [],
             orders: [],
             marketingExecutives: []
         };
-
+    
         function addDealer(dealerData) {
             appData.dealers.push({
                 id: 'D' + (appData.dealers.length + 1),
@@ -151,8 +151,7 @@
             });
             updateDashboard();
         }
-
-
+    
         function addProduct(productData) {
             appData.products.push({
                 id: 'P' + (appData.products.length + 1),
@@ -161,23 +160,22 @@
             });
             updateDashboard();
         }
-
- 
-        function updateDashboard() {
     
+        function updateDashboard() {
             const pendingApprovals = 
                 appData.dealers.filter(d => d.status === 'pending').length +
                 appData.products.filter(p => p.status === 'pending').length;
-            
     
             const activeOrders = appData.orders.filter(o => o.status === 'active').length;
-            
-     
+    
             const totalDealers = appData.dealers.filter(d => d.status === 'approved').length;
+    
+            document.querySelector('.pending-approvals').textContent = pendingApprovals;
+            document.querySelector('.active-orders').textContent = activeOrders;
+            document.querySelector('.total-dealers').textContent = totalDealers;
         }
-
-
+    
         updateDashboard();
-    </script>
+    </script>    
 </body>
 </html>
