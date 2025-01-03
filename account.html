@@ -21,6 +21,10 @@
             box-shadow: 5px 5px 10px #a3b1c6, 
                        -5px -5px 10px #ffffff;
             transition: all 0.2s ease;
+            padding: 10px 20px;
+            font-weight: bold;
+            color: #333;
+            display: inline-block;
         }
         .clay-button:active {
             box-shadow: inset 5px 5px 10px #a3b1c6, 
@@ -31,6 +35,17 @@
         .status-orange { background-color: #FFA500; }
         .status-green { background-color: #90EE90; }
         .status-brown { background-color: #DEB887; }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .order-light-blue { background-color: #f0f8ff; }
+        .order-yellow { background-color: #fffacd; }
+        .order-orange { background-color: #ffe4b5; }
+        .order-green { background-color: #f0fff0; }
+        .order-brown { background-color: #f5f5dc; }
     </style>
 </head>
 <body class="bg-[#e0e5ec] min-h-screen">
@@ -71,15 +86,15 @@
 
           
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="clay p-6">
+                <div class="clay p-6 text-center">
                     <h3 class="text-lg font-semibold mb-2">Pending Approvals</h3>
                     <div class="text-3xl font-bold text-blue-600">12</div>
                 </div>
-                <div class="clay p-6">
+                <div class="clay p-6 text-center">
                     <h3 class="text-lg font-semibold mb-2">Active Orders</h3>
                     <div class="text-3xl font-bold text-green-600">45</div>
                 </div>
-                <div class="clay p-6">
+                <div class="clay p-6 text-center">
                     <h3 class="text-lg font-semibold mb-2">Total Dealers</h3>
                     <div class="text-3xl font-bold text-purple-600">156</div>
                 </div>
@@ -99,22 +114,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-t">
+                            <tr class="border-t order-light-blue">
                                 <td class="p-3">#ORD001</td>
                                 <td class="p-3">MD Traders</td>
                                 <td class="p-3">₹25,000</td>
-                                <td class="p-3"><span class="status-light-blue px-2 py-1 rounded">Order In</span></td>
+                                <td class="p-3"><span class="status status-light-blue">Order In</span></td>
                                 <td class="p-3">
-                                    <button class="clay-button px-3 py-1 text-sm">View</button>
+                                    <button class="clay-button text-sm">View</button>
                                 </td>
                             </tr>
-                            <tr class="border-t">
+                            <tr class="border-t order-yellow">
                                 <td class="p-3">#ORD002</td>
                                 <td class="p-3">Pranav</td>
                                 <td class="p-3">₹45,000</td>
-                                <td class="p-3"><span class="status-yellow px-2 py-1 rounded">Approved</span></td>
+                                <td class="p-3"><span class="status status-yellow">Approved</span></td>
                                 <td class="p-3">
-                                    <button class="clay-button px-3 py-1 text-sm">View</button>
+                                    <button class="clay-button text-sm">View</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -122,41 +137,35 @@
                 </div>
             </div>
 
-       
             <div class="clay p-6">
                 <h2 class="text-xl font-bold mb-4">Pending Approvals</h2>
                 <div class="space-y-4">
-                    <div class="clay-button p-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-semibold">New Dealer Registration</h3>
-                                <p class="text-sm text-gray-600">Om Enterprises</p>
-                            </div>
-                            <div class="space-x-2">
-                                <button class="clay-button px-4 py-2 text-green-600">Approve</button>
-                                <button class="clay-button px-4 py-2 text-red-600">Reject</button>
-                            </div>
+                    <div class="clay-button p-4 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-semibold">New Dealer Registration</h3>
+                            <p class="text-sm text-gray-600">Om Enterprises</p>
+                        </div>
+                        <div class="space-x-2">
+                            <button class="clay-button px-4 py-2 text-green-600" onclick="handleApproval('Dealer', 'Om Enterprises', 'approve')">Approve</button>
+                            <button class="clay-button px-4 py-2 text-red-600" onclick="handleApproval('Dealer', 'Om Enterprises', 'reject')">Reject</button>
                         </div>
                     </div>
-                    <div class="clay-button p-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-semibold">Price Adjustment Request</h3>
-                                <p class="text-sm text-gray-600">Product: Engine Oil</p>
-                            </div>
-                            <div class="space-x-2">
-                                <button class="clay-button px-4 py-2 text-green-600">Approve</button>
-                                <button class="clay-button px-4 py-2 text-red-600">Reject</button>
-                            </div>
+                    <div class="clay-button p-4 flex justify-between items-center">
+                        <div>
+                            <h3 class="font-semibold">Price Adjustment Request</h3>
+                            <p class="text-sm text-gray-600">Product: Engine Oil</p>
+                        </div>
+                        <div class="space-x-2">
+                            <button class="clay-button px-4 py-2 text-green-600" onclick="handleApproval('Price Adjustment', 'Engine Oil', 'approve')">Approve</button>
+                            <button class="clay-button px-4 py-2 text-red-600" onclick="handleApproval('Price Adjustment', 'Engine Oil', 'reject')">Reject</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+  
     <script>
-     
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', (e) => {
                 document.querySelectorAll('nav a').forEach(el => 
@@ -164,15 +173,14 @@
                 e.target.closest('a').classList.add('bg-gray-100');
             });
         });
-
-       
+    
         function handleApproval(type, id, action) {
             console.log(`${action} ${type} with ID: ${id}`);
         }
-
+    
         function updateOrderStatus(orderId, newStatus) {
             console.log(`Updating order ${orderId} to ${newStatus}`);
         }
     </script>
 </body>
-</html>
+</html>    
