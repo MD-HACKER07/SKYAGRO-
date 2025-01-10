@@ -15,6 +15,7 @@
         .clay-card {
             background: #ffffff;
             border-radius: 20px;
+            
             padding: 20px;
             box-shadow: 
                 8px 8px 16px #d1d9e6,
@@ -29,8 +30,6 @@
             border-radius: 10px;
             transition: all 0.3s ease;
             padding: 10px 20px;
-            font-weight: bold;
-            color: #333;
         }
 
         .clay-button:hover {
@@ -38,6 +37,8 @@
                 inset 4px 4px 8px #d1d9e6,
                 inset -4px -4px 8px #ffffff;
             background: #e6e6e6;
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
         }
 
         .progress-bar {
@@ -52,19 +53,137 @@
             padding: 10px;
             min-height: 100px;
         }
+
+        #approval-window {
+            display: none;
+        }
+
+        #rejection-window {
+            display: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .action-logs {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 
+                8px 8px 16px #d1d9e6,
+                -8px -8px 16px #ffffff;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+        }
+
+        .hover-production:hover {
+            background-color: blue;
+        }
+        .hover-completed:hover {
+            background-color: green;
+        }
+        .hover-approved:hover {
+            background-color: lightgreen;
+        }
+        .hover-reject:hover {
+            background-color: red;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .popup h2 {
+            margin-top: 0;
+        }
+
+        .popup textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .popup button {
+            margin-right: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logs {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div class="clay-card w-full max-w-5xl">
         <h1 class="text-3xl font-bold mb-6 text-center text-blue-700">Production Management</h1>
 
-
         <div class="mb-6 flex justify-between items-center">
             <input 
                 type="text" 
                 placeholder="Search Orders..." 
-                class="w-1/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <select class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-1/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="filterOrders()">
+            <select id="order-filter" class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="filterOrders()">
                 <option value="all">All Orders</option>
                 <option value="pending">Pending</option>
                 <option value="in-production">In Production</option>
@@ -72,7 +191,8 @@
             </select>
         </div>
 
-   
+        <div id="status-message" class="mb-4 text-center font-semibold"></div>
+
         <div class="mb-6">
             <h2 class="text-xl font-semibold mb-4">Approved Orders</h2>
             <table class="w-full border border-gray-300 rounded-lg text-left">
@@ -86,8 +206,8 @@
                         <th class="p-3">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr class="border-b border-gray-300">
+                <tbody id="orders-table-body">
+                    <tr class="border-b border-gray-300 order-row" data-status="pending">
                         <td class="p-3">ORD001</td>
                         <td class="p-3">Product A</td>
                         <td class="p-3">Spec A</td>
@@ -102,9 +222,15 @@
                             <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD001')">
                                 <i class="fas fa-check mr-2"></i>Completed
                             </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD001')">
+                                <i class="fas fa-check-circle mr-2"></i>Approve
+                            </button>
+                            <button class="clay-button bg-red-500 text-white hover-reject" onclick="openRejectionWindow('ORD001')">
+                                <i class="fas fa-times-circle mr-2"></i>Reject
+                            </button>
                         </td>
                     </tr>
-                    <tr class="border-b border-gray-300">
+                    <tr class="border-b border-gray-300 order-row" data-status="in-production">
                         <td class="p-3">ORD002</td>
                         <td class="p-3">Product B</td>
                         <td class="p-3">Spec B</td>
@@ -119,55 +245,309 @@
                             <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD002')">
                                 <i class="fas fa-check mr-2"></i>Completed
                             </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD002')">
+                                <i class="fas fa-check-circle mr-2"></i>Approve
+                            </button>
+                            <button class="clay-button bg-red-500 text-white hover-reject" onclick="openRejectionWindow('ORD002')">
+                                <i class="fas fa-times-circle mr-2"></i>Reject
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="border-b border-gray-300 order-row" data-status="completed">
+                        <td class="p-3">ORD003</td>
+                        <td class="p-3">Product C</td>
+                        <td class="p-3">Spec C</td>
+                        <td class="p-3">20</td>
+                        <td class="p-3">
+                            <span class="bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Completed</span>
+                        </td>
+                        <td class="p-3 flex gap-2">
+                            <button class="clay-button bg-blue-500 text-white" onclick="markInProduction('ORD003')">
+                                <i class="fas fa-tools mr-2"></i>In Production
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD003')">
+                                <i class="fas fa-check mr-2"></i>Completed
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD003')">
+                                <i class="fas fa-check-circle mr-2"></i>Approve
+                            </button>
+                            <button class="clay-button bg-red-500 text-white hover-reject" onclick="openRejectionWindow('ORD003')">
+                                <i class="fas fa-times-circle mr-2"></i>Reject
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="border-b border-gray-300 order-row" data-status="pending">
+                        <td class="p-3">ORD004</td>
+                        <td class="p-3">Product D</td>
+                        <td class="p-3">Spec D</td>
+                        <td class="p-3">25</td>
+                        <td class="p-3">
+                            <span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Pending</span>
+                        </td>
+                        <td class="p-3 flex gap-2">
+                            <button class="clay-button bg-blue-500 text-white" onclick="markInProduction('ORD004')">
+                                <i class="fas fa-tools mr-2"></i>In Production
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD004')">
+                                <i class="fas fa-check mr-2"></i>Completed
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD004')">
+                                <i class="fas fa-check-circle mr-2"></i>Approve
+                            </button>
+                            <button class="clay-button bg-red-500 text-white hover-reject" onclick="openRejectionWindow('ORD004')">
+                                <i class="fas fa-times-circle mr-2"></i>Reject
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="border-b border-gray-300 order-row" data-status="in-production">
+                        <td class="p-3">ORD005</td>
+                        <td class="p-3">Product E</td>
+                        <td class="p-3">Spec E</td>
+                        <td class="p-3">30</td>
+                        <td class="p-3">
+                            <span class="bg-blue-200 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">In Production</span>
+                        </td>
+                        <td class="p-3 flex gap-2">
+                            <button class="clay-button bg-blue-500 text-white" onclick="markInProduction('ORD005')">
+                                <i class="fas fa-tools mr-2"></i>In Production
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD005')">
+                                <i class="fas fa-check mr-2"></i>Completed
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD005')">
+                                <i class="fas fa-check-circle mr-2"></i>Approve
+                            </button>
+                            <button class="clay-button bg-red-500 text-white" onclick="openRejectionWindow('ORD005')">
+                                <i class="fas fa-times-circle mr-2"></i>Reject
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="border-b border-gray-300 order-row" data-status="completed">
+                        <td class="p-3">ORD006</td>
+                        <td class="p-3">Product F</td>
+                        <td class="p-3">Spec F</td>
+                        <td class="p-3">35</td>
+                        <td class="p-3">
+                            <span class="bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Completed</span>
+                        </td>
+                        <td class="p-3 flex gap-2">
+                            <button class="clay-button bg-blue-500 text-white" onclick="markInProduction('ORD006')">
+                                <i class="fas fa-tools mr-2"></i>In Production
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD006')">
+                                <i class="fas fa-check mr-2"></i>Completed
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD006')">
+                                <i class="fas fa-check-circle mr-2"></i>Approve
+                            </button>
+                            <button class="clay-button bg-red-500 text-white" onclick="openRejectionWindow('ORD006')">
+                                <i class="fas fa-times-circle mr-2"></i>Reject
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="border-b border-gray-300 order-row" data-status="pending">
+                        <td class="p-3">ORD007</td>
+                        <td class="p-3">Product G</td>
+                        <td class="p-3">Spec G</td>
+                        <td class="p-3">40</td>
+                        <td class="p-3">
+                            <span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Pending</span>
+                        </td>
+                        <td class="p-3 flex gap-2">
+                            <button class="clay-button bg-blue-500 text-white" onclick="markInProduction('ORD007')">
+                                <i class="fas fa-tools mr-2"></i>In Production
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD007')">
+                                <i class="fas fa-check mr-2"></i>Completed
+                            </button>
+                            <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD007')">
+                                <i class="fas fa-check-circle mr-2"></i>Approve
+                            </button>
+                            <button class="clay-button bg-red-500 text-white hover-reject" onclick="openRejectionWindow('ORD007')">
+                                <i class="fas fa-times-circle mr-2"></i>Reject
+                            </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-     
         <div class="mb-6">
             <h2 class="text-xl font-semibold mb-4">Production Schedule</h2>
             <div class="drag-container">
                 <p class="text-gray-500 italic">Drag and drop orders to prioritize</p>
                 <div class="flex flex-col gap-3" id="dragArea">
-                    <div class="p-3 bg-gray-100 rounded-lg shadow-md">Order ID: ORD001 | Priority: High</div>
-                    <div class="p-3 bg-gray-100 rounded-lg shadow-md">Order ID: ORD002 | Priority: Medium</div>
+                    <div class="p-3 bg-gray-100 rounded-lg shadow-md hover-production">Order ID: ORD001 | Priority: High</div>
+                    <div class="p-3 bg-gray-100 rounded-lg shadow-md hover-production">Order ID: ORD002 | Priority: Medium</div>
+                    <div class="p-3 bg-gray-100 rounded-lg shadow-md hover-production">Order ID: ORD003 | Priority: Low</div>
+                    <div class="p-3 bg-gray-100 rounded-lg shadow-md hover-production">Order ID: ORD004 | Priority: High</div>
+                    <div class="p-3 bg-gray-100 rounded-lg shadow-md hover-production">Order ID: ORD005 | Priority: Medium</div>
+                    <div class="p-3 bg-gray-100 rounded-lg shadow-md hover-production">Order ID: ORD006 | Priority: Low</div>
+                    <div class="p-3 bg-gray-100 rounded-lg shadow-md hover-production">Order ID: ORD007 | Priority: High</div>
                 </div>
             </div>
         </div>
 
-    
         <div class="mb-6">
             <h2 class="text-xl font-semibold mb-4">Production Progress</h2>
             <div class="mb-4">
                 <p class="font-semibold">Order ID: ORD001</p>
-                <div class="bg-gray-300 rounded-full overflow-hidden">
+                <div class="bg-gray-300 rounded-full overflow-hidden hover-completed">
                     <div class="progress-bar w-1/3"></div>
                 </div>
                 <p class="text-sm text-gray-500">30% Completed</p>
             </div>
             <div>
                 <p class="font-semibold">Order ID: ORD002</p>
-                <div class="bg-gray-300 rounded-full overflow-hidden">
+                <div class="bg-gray-300 rounded-full overflow-hidden hover-completed">
+                    <div class="progress-bar w-2/3"></div>
+                </div>
+                <p class="text-sm text-gray-500">60% Completed</p>
+            </div>
+            <div class="mb-4">
+                <p class="font-semibold">Order ID: ORD003</p>
+                <div class="bg-gray-300 rounded-full overflow-hidden hover-completed">
+                    <div class="progress-bar w-1/3"></div>
+                </div>
+                <p class="text-sm text-gray-500">30% Completed</p>
+            </div>
+            <div>
+                <p class="font-semibold">Order ID: ORD004</p>
+                <div class="bg-gray-300 rounded-full overflow-hidden hover-completed">
                     <div class="progress-bar w-2/3"></div>
                 </div>
                 <p class="text-sm text-gray-500">60% Completed</p>
             </div>
         </div>
+
+        <div id="rejection-window" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                <h2 class="text-xl font-semibold mb-4">Rejection Reason</h2>
+                <textarea id="rejection-reason" rows="4" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none"></textarea>
+                <div class="flex justify-end mt-4 gap-2">
+                    <button onclick="rejectOrder()" class="clay-button bg-red-500 text-white">Reject</button>
+                    <button onclick="closeRejectionWindow()" class="clay-button bg-gray-500 text-white">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4">Action Logs</h2>
+            <div class="action-logs" id="action-logs"></div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="rejectModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Reject Order</h2>
+            <p>Please provide a reason for rejecting the order:</p>
+            <textarea id="rejectReason" rows="4" class="w-full p-2 border rounded"></textarea>
+            <button class="clay-button bg-red-500 text-white mt-4" onclick="submitRejection()">Submit</button>
+        </div>
+    </div>
+
+    <!-- Order Rejection Logs Section -->
+    <div class="logs" id="logs">
+        <h3>Order Rejection Logs</h3>
     </div>
 
     <script>
-        function markInProduction(orderId) {
-            alert(`Order ${orderId} marked as In Production`);
-        }
+        function updateStatusMessage(orderId, status) {
+    const statusMessage = `Order ${orderId} is now ${status}`;
+    document.getElementById('status-message').innerText = statusMessage;
+    logAction(statusMessage);
+}
 
-        function markCompleted(orderId) {
-            alert(`Order ${orderId} marked as Completed`);
-        }
+function logAction(message) {
+    const logEntry = document.createElement('div');
+    logEntry.className = 'log-entry';
+    logEntry.innerText = message;
+    document.getElementById('action-logs').appendChild(logEntry);
+}
 
-   
-        dragula([document.getElementById('dragArea')]);
+function markInProduction(orderId) {
+    updateStatusMessage(orderId, 'In Production');
+    alert(`Order ${orderId} marked as In Production`);
+}
+
+function markCompleted(orderId) {
+    updateStatusMessage(orderId, 'Completed');
+    alert(`Order ${orderId} marked as Completed`);
+}
+
+function approveOrder(orderId) {
+    updateStatusMessage(orderId, 'Approved');
+    alert(`Order ${orderId} approved`);
+}
+
+function openRejectionWindow(orderId) {
+    document.getElementById('rejectModal').style.display = 'block';
+    document.getElementById('rejectModal').dataset.orderId = orderId;
+}
+
+function closeModal() {
+    document.getElementById('rejectModal').style.display = 'none';
+}
+
+function submitRejection() {
+    var reason = document.getElementById('rejectReason').value;
+    if (reason.trim() === '') {
+        alert('Please provide a reason for rejection.');
+        return;
+    }
+    var orderId = document.getElementById('rejectModal').dataset.orderId;
+    // Handle the rejection logic here, e.g., send the reason to the server
+    console.log('Order rejected for reason:', reason);
+    addLogEntry(orderId, reason);
+    closeModal();
+}
+
+function addLogEntry(orderId, reason) {
+    var logs = document.getElementById('logs');
+    var logEntry = document.createElement('div');
+    logEntry.className = 'log-entry';
+    logEntry.innerHTML = `<strong>Order ${orderId} rejected:</strong> ${reason}`;
+    logs.appendChild(logEntry);
+}
+
+function closeRejectionWindow() {
+    document.getElementById('rejection-window').classList.add('hidden');
+}
+
+function rejectOrder() {
+    const orderId = document.getElementById('rejection-window').dataset.orderId;
+    const reason = document.getElementById('rejection-reason').value;
+    const rejectionMessage = `Order ${orderId} rejected. Reason: ${reason}`;
+    console.log(rejectionMessage);
+    closeRejectionWindow();
+    updateStatusMessage(orderId, 'Rejected');
+    alert(`Order ${orderId} rejected with reason: ${reason}`);
+}
+
+function filterOrders() {
+    const filter = document.getElementById('order-filter').value;
+    const rows = document.querySelectorAll('.order-row');
+    rows.forEach(row => {
+        if (filter === 'all' || row.dataset.status === filter) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+dragula([document.getElementById('dragArea')]);
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            var modal = document.getElementById('rejectModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
+
