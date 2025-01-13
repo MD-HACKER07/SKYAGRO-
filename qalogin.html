@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Team Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .clay-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow:
+                8px 8px 16px #d1d9e6,
+                -8px -8px 16px #ffffff;
+        }
+
+        .clay-button {
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            box-shadow:
+                4px 4px 8px #d1d9e6,
+                -4px -4px 8px #ffffff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .clay-button:hover {
+            box-shadow:
+                inset 4px 4px 8px #d1d9e6,
+                inset -4px -4px 8px #ffffff;
+        }
+
+        .clay-input {
+            background: #f0f0f3;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow:
+                inset 2px 2px 5px #d1d9e6,
+                inset -2px -2px 5px #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="clay-card w-full max-w-md">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-800">QA Team Login</h2>
+            <p class="text-gray-600">Welcome to the QA Team Dashboard</p>
+        </div>
+        <form id="QATeamLoginForm" class="space-y-6">
+            <div>
+                <label class="block text-gray-700 mb-2">Username</label>
+                <input type="text" id="username" class="clay-input w-full" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 mb-2">Password</label>
+                <input type="password" id="password" class="clay-input w-full" required>
+            </div>
+            <button type="submit" class="clay-button w-full py-3 text-gray-800 font-medium">Login</button>
+            <p class="text-center text-sm text-gray-600">
+                <a href="#" class="text-blue-600 hover:underline">Forgot Password?</a>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('QATeamLoginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username && password) {
+                window.location.href = 'qateam.html';
+            } else {
+                alert('Please fill in all fields!');
+            }
+        });
+    </script>
+</body>
+</html>

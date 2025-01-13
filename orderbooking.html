@@ -47,111 +47,173 @@
     <div class="clay-card w-full max-w-4xl">
         <h1 class="text-2xl font-bold mb-4 text-center">Order Booking</h1>
         <form id="orderForm" class="space-y-4">
-            <!-- Select Dealer -->
+
             <div>
                 <label class="block text-gray-700 font-semibold mb-2">Select Dealer</label>
-                <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
-                    <option>Select Dealer</option>
-                    <option>Dealer 1</option>
-                    <option>Dealer 2</option>
-                    <option>Dealer 3</option>
+                <select id="dealerSelect" class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                    <option value="">Select Dealer</option>
+                    <option value="Dealer 1">Dealer 1</option>
+                    <option value="Dealer 2">Dealer 2</option>
+                    <option value="Dealer 3">Dealer 3</option>
                 </select>
             </div>
 
-            <!-- Product Selection -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Select Products</label>
+                <select id="productSelect" class="clay-input w-full border border-gray-300 rounded-lg p-2" multiple required>
+                    <option value="Product 1">Product 1</option>
+                    <option value="Product 2">Product 2</option>
+                    <option value="Product 3">Product 3</option>
+                    <option value="Product 4">Product 4</option>
+                    <option value="Product 5">Product 5</option>
+                </select>
+            </div>
+
+   
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-gray-700 font-semibold mb-2">Category</label>
-                    <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
-                        <option>Select Category</option>
-                        <option>Electronics</option>
-                        <option>Appliances</option>
-                        <option>Clothing</option>
+                    <select id="categorySelect" class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                        <option value="">Select Category</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Appliances">Appliances</option>
+                        <option value="Clothing">Clothing</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-gray-700 font-semibold mb-2">Subcategory</label>
-                    <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
-                        <option>Select Subcategory</option>
+                    <select id="subcategorySelect" class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                        <option value="">Select Subcategory</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-gray-700 font-semibold mb-2">Brand</label>
-                    <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
-                        <option>Select Brand</option>
+                    <select id="brandSelect" class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                        <option value="">Select Brand</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Product Details -->
+     
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-gray-700 font-semibold mb-2">Specifications</label>
-                    <input type="text" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Specifications" required>
+                    <input type="text" id="specifications" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Specifications" required>
                 </div>
                 <div>
                     <label class="block text-gray-700 font-semibold mb-2">Quantity</label>
-                    <input type="number" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Quantity" required>
+                    <input type="number" id="quantity" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Quantity" required>
                 </div>
                 <div>
                     <label class="block text-gray-700 font-semibold mb-2">Price</label>
-                    <input type="number" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Price" required>
+                    <input type="number" id="price" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter Price" required>
                 </div>
             </div>
 
-            <!-- Cart Summary -->
+        
             <div class="mt-6">
                 <h3 class="text-lg font-semibold mb-2">Cart Summary</h3>
                 <div id="cartItems" class="mb-4">
                     <p class="text-gray-500 italic">No items in the cart.</p>
                 </div>
                 <button type="button" class="clay-button" onclick="addToCart()">Add to Cart</button>
-                <p class="text-right mt-4 font-bold text-gray-700">Total: <span id="totalValue">0</span></p>
+                <p class="text-right mt-4 font-bold text-gray-700">Total: ₹<span id="totalValue">0</span></p>
             </div>
 
-            <!-- Remarks -->
             <div>
                 <label class="block text-gray-700 font-semibold mb-2">Remarks / Special Instructions</label>
-                <textarea class="clay-input w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Enter any special instructions"></textarea>
+                <textarea id="remarks" class="clay-input w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Enter any special instructions"></textarea>
             </div>
 
-            <!-- Payment Mode -->
+  
             <div>
                 <label class="block text-gray-700 font-semibold mb-2">Payment Mode</label>
-                <select class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
-                    <option>Select Payment Mode</option>
-                    <option>Cash</option>
-                    <option>Cheque</option>
-                    <option>Credit</option>
-                    <option>UPI</option>
+                <select id="paymentMode" class="clay-input w-full border border-gray-300 rounded-lg p-2" required>
+                    <option value="">Select Payment Mode</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="Credit">Credit</option>
+                    <option value="UPI">UPI</option>
                 </select>
             </div>
             
-            <!-- Submit Button -->
-            <button type="submit" class="clay-button w-full py-3">Submit Order</button>
+       
+            <button type="button" class="clay-button w-full py-3" onclick="confirmOrder()">Confirm Order</button>
         </form>
     </div>
 
     <script>
         let totalValue = 0;
+        let cart = [];
 
+       
+        function generateOrderId() {
+            const timestamp = Date.now(); 
+            const randomString = Math.random().toString(36).substring(2, 8).toUpperCase(); 
+            return `ORD-${timestamp}-${randomString}`;
+        }
+
+     
         function addToCart() {
-            const quantity = document.querySelector('input[placeholder="Enter Quantity"]').value;
-            const price = document.querySelector('input[placeholder="Enter Price"]').value;
+            const quantity = document.getElementById('quantity').value;
+            const price = document.getElementById('price').value;
+            const specifications = document.getElementById('specifications').value;
 
-            if (quantity && price) {
-                const cartItems = document.getElementById('cartItems');
+            if (quantity && price && specifications) {
                 const itemTotal = quantity * price;
                 totalValue += itemTotal;
 
-                const itemRow = document.createElement('p');
-                itemRow.textContent = `Product - Quantity: ${quantity}, Price: ${price}, Total: ${itemTotal}`;
-                cartItems.appendChild(itemRow);
+                const product = {
+                    specifications: specifications,
+                    quantity: quantity,
+                    price: price,
+                    total: itemTotal
+                };
 
-                document.getElementById('totalValue').textContent = totalValue;
+                cart.push(product);
+                updateCartSummary();
+                document.getElementById('totalValue').textContent = totalValue.toFixed(2);
             } else {
-                alert('Please fill in quantity and price.');
+                alert('Please fill in all fields (Quantity, Price, Specifications).');
             }
+        }
+
+
+        function updateCartSummary() {
+            const cartItems = document.getElementById('cartItems');
+            cartItems.innerHTML = ''; 
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 italic">No items in the cart.</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemRow = document.createElement('p');
+                    itemRow.textContent = `Product - Quantity: ${item.quantity}, Price: ₹${item.price}, Total: ₹${item.total.toFixed(2)}`;
+                    cartItems.appendChild(itemRow);
+                });
+            }
+        }
+
+      
+        function confirmOrder() {
+            if (cart.length === 0) {
+                alert('Please add products to the cart before confirming.');
+                return;
+            }
+
+            const orderDetails = {
+                dealerName: document.getElementById('dealerSelect').value,
+                selectedProducts: Array.from(document.getElementById('productSelect').selectedOptions).map(option => option.value),
+                paymentMode: document.getElementById('paymentMode').value,
+                remarks: document.getElementById('remarks').value,
+                products: cart,
+                orderId: generateOrderId() 
+            };
+
+
+            localStorage.setItem('orderData', JSON.stringify(orderDetails));
+
+            window.location.href = 'receipt.html'; 
         }
     </script>
 </body>

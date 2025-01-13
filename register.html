@@ -56,6 +56,18 @@
             resize: vertical;
         }
 
+        .clay-location {
+            background: #f0f0f3;
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 
+                inset 2px 2px 5px #d1d9e6,
+                inset -2px -2px 5px #ffffff;
+            border: 1px solid #d1d9e6;
+            font-size: 14px;
+            color: #4b4b4b;
+        }
+
         .active-nav {
             background: linear-gradient(145deg, #e6e6e6, #ffffff);
             box-shadow: 
@@ -115,7 +127,11 @@
                     <input type="text" id="gstNumber" class="clay-input w-full" required>
                 </div>
 
-    
+                <div>
+                    <label class="block text-gray-700 mb-2">Dealer Location (Auto-detected)</label>
+                    <span id="dealerLocation" class="clay-location w-full">Fetching location...</span>
+                </div>
+
                 <input type="hidden" id="dealerID">
 
                 <button type="submit" class="clay-button w-full py-3 text-gray-800 font-medium">Register Dealer</button>
@@ -124,13 +140,40 @@
     </div>
 
     <script>
-     
+        // Function to generate unique Dealer ID
         function generateDealerID() {
             const timestamp = new Date().getTime();  
             const randomNum = Math.floor(Math.random() * 10000); 
             return `DID-${timestamp}-${randomNum}`;  
         }
-    
+
+        // Function to validate GST number format
+        function validateGST(gstNumber) {
+            const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9]{1}[A-Z]{1}[A-Z0-9]{1}$/;
+            return gstRegex.test(gstNumber);
+        }
+
+        // Function to get the user's GPS location
+        function getGPSLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    document.getElementById('dealerLocation').innerText = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                }, function(error) {
+                    alert("Unable to retrieve your location.");
+                    document.getElementById('dealerLocation').innerText = "Location not available.";
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+                document.getElementById('dealerLocation').innerText = "Location not available.";
+            }
+        }
+
+        // Get GPS location when the page loads
+        window.onload = getGPSLocation;
+
+        // Form submit handler
         document.getElementById('dealerRegistrationForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -145,16 +188,24 @@
             const bankDetails = document.getElementById('bankDetails').value;
             const gstNumber = document.getElementById('gstNumber').value;
 
+            // Generate Dealer ID
             const dealerID = generateDealerID();
             document.getElementById('dealerID').value = dealerID; 
 
-
+            // Email validation
             const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (!emailPattern.test(email)) {
                 alert("Please enter a valid email address.");
                 return;
             }
 
+            // GST validation
+            if (!validateGST(gstNumber)) {
+                alert("Invalid GST number format.");
+                return;
+            }
+
+            // Check if all required fields are filled
             if (email && shopAct && dealerName && dealerAddress && pinCode && dealerPhoto && aadharNumber && panCardNumber && bankDetails && gstNumber) {
                 window.location.href = `dealerid.html?dealerID=${dealerID}`;
             } else {
@@ -162,6 +213,5 @@
             }
         });
     </script>
-    
 </body>
 </html>

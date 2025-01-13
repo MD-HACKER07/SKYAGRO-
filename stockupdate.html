@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Update</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .clay-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 
+                8px 8px 16px #d1d9e6,
+                -8px -8px 16px #ffffff;
+        }
+
+        .clay-button {
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            box-shadow: 
+                4px 4px 8px #d1d9e6,
+                -4px -4px 8px #ffffff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            padding: 12px 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .clay-button:hover {
+            box-shadow: 
+                inset 4px 4px 8px #d1d9e6,
+                inset -4px -4px 8px #ffffff;
+            background: #e6e6e6;
+        }
+
+        .clay-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #4f46e5;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="clay-card w-full max-w-4xl">
+        <h1 class="text-2xl font-bold mb-4 text-center">Stock Update</h1>
+        <p class="text-gray-600 text-center mb-8">
+            Search and update stock quantities for products in the inventory.
+        </p>
+
+        <!-- Search Product -->
+        <form id="stockForm" onsubmit="searchProduct(event)" class="space-y-6">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Search Product <span class="text-red-500">*</span></label>
+                <input type="text" id="searchInput" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter product name or ID" required>
+            </div>
+            <button type="submit" class="clay-button w-full py-3">Search</button>
+        </form>
+
+        <!-- Product Details -->
+        <div id="productDetails" class="mt-8 hidden">
+            <h2 class="text-lg font-semibold mb-4">Product Details</h2>
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border border-gray-300 px-4 py-2">Product ID</th>
+                        <th class="border border-gray-300 px-4 py-2">Product Name</th>
+                        <th class="border border-gray-300 px-4 py-2">Category</th>
+                        <th class="border border-gray-300 px-4 py-2">Current Stock</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2" id="productId">PRD-001</td>
+                        <td class="border border-gray-300 px-4 py-2" id="productName">Example Product</td>
+                        <td class="border border-gray-300 px-4 py-2" id="productCategory">Electronics</td>
+                        <td class="border border-gray-300 px-4 py-2" id="currentStock">50</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Update Stock -->
+        <div id="updateStockSection" class="mt-8 hidden">
+            <h2 class="text-lg font-semibold mb-4">Update Stock</h2>
+            <form onsubmit="updateStock(event)" class="space-y-6">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Update Quantity <span class="text-red-500">*</span></label>
+                    <input type="number" id="newStock" class="clay-input w-full border border-gray-300 rounded-lg p-2" placeholder="Enter new stock quantity" required>
+                </div>
+                <button type="submit" class="clay-button w-full py-3">Update Stock</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function searchProduct(event) {
+            event.preventDefault();
+            
+            // Dummy product details (replace with actual API or database search logic)
+            const productFound = true;
+
+            if (productFound) {
+                // Populate product details (replace with actual data from the search)
+                document.getElementById('productId').innerText = 'PRD-001';
+                document.getElementById('productName').innerText = 'Example Product';
+                document.getElementById('productCategory').innerText = 'Electronics';
+                document.getElementById('currentStock').innerText = '50';
+
+                // Show product details and stock update section
+                document.getElementById('productDetails').classList.remove('hidden');
+                document.getElementById('updateStockSection').classList.remove('hidden');
+            } else {
+                alert('Product not found!');
+            }
+        }
+
+        function updateStock(event) {
+            event.preventDefault();
+
+            const newStock = document.getElementById('newStock').value;
+
+            if (newStock >= 0) {
+                // Update current stock value (replace with actual database update logic)
+                document.getElementById('currentStock').innerText = newStock;
+
+                alert('Stock updated successfully!');
+            } else {
+                alert('Invalid stock quantity!');
+            }
+        }
+    </script>
+</body>
+</html>

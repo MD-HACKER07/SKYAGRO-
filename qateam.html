@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Team Module</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .clay-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 
+                8px 8px 16px #d1d9e6,
+                -8px -8px 16px #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .clay-button {
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            box-shadow: 
+                4px 4px 8px #d1d9e6,
+                -4px -4px 8px #ffffff;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: bold;
+            color: #333;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .clay-button:hover {
+            box-shadow: 
+                inset 4px 4px 8px #d1d9e6,
+                inset -4px -4px 8px #ffffff;
+            background: #e6e6e6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .popup h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            margin-bottom: 20px;
+        }
+
+        .popup .clay-button {
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-6">QA Team Module</h1>
+
+        <!-- Pending Orders Section -->
+        <div class="clay-card">
+            <h2 class="text-xl font-semibold mb-4">Pending Orders</h2>
+            <table class="table-auto w-full">
+                <thead>
+                    <tr>
+                        <th class="text-left p-2">Order ID</th>
+                        <th class="text-left p-2">Status</th>
+                        <th class="text-left p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-list">
+                    <!-- Dynamic Orders Will Be Injected Here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- QA Details Section -->
+        <div class="clay-card hidden" id="qa-details-section">
+            <h2 class="text-xl font-semibold mb-4">QA Details for Order #<span id="qaOrderId">1234</span></h2>
+            <div>
+                <textarea id="featuresTextarea" class="w-full p-2 border rounded mb-4" placeholder="Enter features..."></textarea>
+                <textarea id="errorReportTextarea" class="w-full p-2 border rounded mb-4" placeholder="Enter error report (if any)..."></textarea>
+                <div class="flex gap-4">
+                    <button id="qa-pass" class="clay-button">QA Pass</button>
+                    <button id="mark-error" class="clay-button">Report Issue</button>
+                </div>
+            </div>
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold">Feature Log</h3>
+                <ul id="feature-log" class="list-disc list-inside"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const orders = [
+            { id: 101, status: 'In QA' },
+            { id: 102, status: 'In QA' },
+            { id: 103, status: 'In QA' },
+        ];
+
+        const ordersListEl = document.getElementById('orders-list');
+        const qaDetailsSection = document.getElementById('qa-details-section');
+        const qaOrderIdEl = document.getElementById('qaOrderId');
+        const featuresTextarea = document.getElementById('featuresTextarea');
+        const errorReportTextarea = document.getElementById('errorReportTextarea');
+        const featureLogEl = document.getElementById('feature-log');
+
+        let currentOrderId = null;
+        const featureLogs = {};
+
+        // Load Orders List
+        function loadOrders() {
+            ordersListEl.innerHTML = '';
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="p-2">${order.id}</td>
+                    <td class="p-2">${order.status}</td>
+                    <td class="p-2">
+                        <button class="clay-button" onclick="inspectOrder(${order.id})">Inspect</button>
+                    </td>
+                `;
+                ordersListEl.appendChild(row);
+            });
+        }
+
+        // Inspect Order
+        function inspectOrder(orderId) {
+            currentOrderId = orderId;
+            qaOrderIdEl.textContent = orderId;
+            qaDetailsSection.classList.remove('hidden');
+            featureLogEl.innerHTML = (featureLogs[orderId] || []).map(
+                feature => `<li>${feature}</li>`
+            ).join('');
+        }
+
+        // QA Pass
+        document.getElementById('qa-pass').addEventListener('click', () => {
+            const features = featuresTextarea.value.trim();
+
+            if (!features) {
+                alert('Please add at least one feature before marking as QA Passed.');
+                return;
+            }
+
+            featureLogs[currentOrderId] = featureLogs[currentOrderId] || [];
+            featureLogs[currentOrderId].push(features);
+
+            alert(`Order #${currentOrderId} has passed QA with the following features:\n${features}`);
+            resetQASection();
+        });
+
+        // Report Issue (Popup Window)
+        document.getElementById('mark-error').addEventListener('click', () => {
+            const errorReport = errorReportTextarea.value.trim();
+
+            if (!errorReport) {
+                alert('Please provide an error report before reporting an issue.');
+                return;
+            }
+
+            showIssuePopup(currentOrderId, errorReport);
+        });
+
+        // Show Issue Popup
+        function showIssuePopup(orderId, errorReport) {
+            const popup = document.createElement('div');
+            popup.classList.add('popup');
+            popup.innerHTML = `
+                <h2 class="text-xl font-bold mb-4">Issue Found</h2>
+                <p class="mb-4">Order #${orderId}: ${errorReport}</p>
+                <p class="mb-4">Please address this issue as soon as possible to ensure timely production and delivery.</p>
+                <button id="report-issue" class="clay-button">Report to Production Team</button>
+            `;
+            document.body.appendChild(popup);
+
+            document.getElementById('report-issue').addEventListener('click', () => {
+                alert(`Issue reported to Production Team for Order #${orderId}:\n${errorReport}`);
+                document.body.removeChild(popup);
+                resetQASection();
+            });
+        }
+
+        // Reset QA Section
+        function resetQASection() {
+            qaDetailsSection.classList.add('hidden');
+            featuresTextarea.value = '';
+            errorReportTextarea.value = '';
+            loadOrders();
+        }
+
+        // Initialize Orders
+        loadOrders();
+    </script>
+</body>
+</html>
