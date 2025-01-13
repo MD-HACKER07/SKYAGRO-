@@ -23,12 +23,11 @@
         }
 
         .clay-button {
-            background: linear-gradient(145deg, #e6e6e6, #ffffff);
             box-shadow: 
                 4px 4px 8px #d1d9e6,
                 -4px -4px 8px #ffffff;
             border-radius: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             padding: 10px 20px;
         }
 
@@ -80,20 +79,7 @@
         .log-entry {
             margin-bottom: 5px;
         }
-
-        .hover-production:hover {
-            background-color: blue;
-        }
-        .hover-completed:hover {
-            background-color: green;
-        }
-        .hover-approved:hover {
-            background-color: lightgreen;
-        }
-        .hover-reject:hover {
-            background-color: red;
-        }
-
+        
         .popup {
             position: fixed;
             top: 50%;
@@ -144,7 +130,7 @@
         }
 
         .close {
-            color: #aaa;
+            color: #333; 
             float: right;
             font-size: 28px;
             font-weight: bold;
@@ -152,7 +138,7 @@
 
         .close:hover,
         .close:focus {
-            color: black;
+            color: #333; 
             text-decoration: none;
             cursor: pointer;
         }
@@ -216,10 +202,10 @@
                             <span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded">Pending</span>
                         </td>
                         <td class="p-3 flex gap-2">
-                            <button class="clay-button bg-blue-500 text-white" onclick="markInProduction('ORD001')">
+                            <button class="clay-button bg-blue-500  text-white" onclick="markInProduction('ORD001')">
                                 <i class="fas fa-tools mr-2"></i>In Production
                             </button>
-                            <button class="clay-button bg-green-500 text-white" onclick="markCompleted('ORD001')">
+                            <button class="clay-button bg-green-500  text-white" onclick="markCompleted('ORD001')">
                                 <i class="fas fa-check mr-2"></i>Completed
                             </button>
                             <button class="clay-button bg-green-500 text-white" onclick="approveOrder('ORD001')">
@@ -550,4 +536,3 @@ dragula([document.getElementById('dragArea')]);
     </script>
 </body>
 </html>
-
