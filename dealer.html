@@ -11,45 +11,49 @@
         * {
             font-family: 'Poppins', sans-serif;
         }
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+        }
         .clay-card {
             background: #ffffff;
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 8px 8px 16px #d1d9e6,
-                       -8px -8px 16px #ffffff;
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
         }
         .clay-button {
-            background: #e8ecf4;
-            border-radius: 10px;
-            padding: 8px 16px;
-            box-shadow: 4px 4px 8px #d1d9e6,
-                       -4px -4px 8px #ffffff;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 5px 5px 10px #0f1b2f;
             transition: all 0.3s ease;
-            color: #0078D4;
+            cursor: pointer;
+            padding: 10px 20px;
         }
-        .clay-button:active {
-            box-shadow: inset 4px 4px 8px #d1d9e6,
-                       inset -4px -4px 8px #ffffff;
-        }
-        .clay-input {
-            background: #e8ecf4;
-            border-radius: 10px;
-            padding: 8px 16px;
-            box-shadow: inset 2px 2px 5px #d1d9e6,
-                       inset -2px -2px 5px #ffffff;
+        .clay-button:hover {
+            box-shadow: inset 3px 3px 6px #d1d9e6, inset -3px -3px 6px #ffffff;
         }
         .active-tab {
             background: #0078D4;
-            box-shadow: inset 4px 4px 8px #d1d9e6,
-                       inset -4px -4px 8px #ffffff;
+            box-shadow: inset 4px 4px 8px #1f3f73, inset -4px -4px 8px #ffffff;
             color: white;
+        }
+        .sidebar {
+            background-color: #0078D4; 
+            color: white;
+        }
+        .sidebar .clay-button {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .sidebar .clay-button:hover {
+            background-color: transparent;
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="flex flex-col md:flex-row">
-        <div class="clay-card m-4 w-full md:w-64 h-auto md:h-screen">
-            <div class="text-xl font-bold mb-8 text-center">SKY AGRO DEALER</div>
+        <div class="clay-card m-4 w-full md:w-64 h-auto md:h-screen sidebar">
+            <div class="text-2xl font-bold mb-8">Sky Agro Admin</div>
             <nav class="space-y-2">
                 <button onclick="switchTab('dashboard')" class="clay-button w-full text-left mb-2 active-tab">
                     <i class="bi bi-house-door mr-2"></i> Dashboard
@@ -105,15 +109,12 @@
             </div>
 
             <div id="orders" class="tab-content hidden">
-                <!-- Add Orders Content Here -->
             </div>
 
             <div id="reports" class="tab-content hidden">
-                <!-- Add Reports Content Here -->
             </div>
 
             <div id="settings" class="tab-content hidden">
-                <!-- Add Settings Content Here -->
             </div>
         </div>
     </div>
