@@ -3,62 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Executive Dashboard</title>
+    <title>Marketing Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             font-family: 'Poppins', sans-serif;
         }
-
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Poppins', sans-serif;
+        }
         .clay-card {
             background: #ffffff;
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 
-                8px 8px 16px #d1d9e6,
-                -8px -8px 16px #ffffff;
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
         }
-
         .clay-button {
-            background: linear-gradient(145deg, #e6e6e6, #ffffff);
-            box-shadow: 
-                4px 4px 8px #d1d9e6,
-                -4px -4px 8px #ffffff;
-            border-radius: 10px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 5px 5px 10px #0f1b2f;
             transition: all 0.3s ease;
-            text-align: center;
-            font-weight: bold;
-            color: #333;
-            padding: 20px;
+            cursor: pointer;
+            padding: 10px 20px;
         }
-
         .clay-button:hover {
-            box-shadow: 
-                inset 4px 4px 8px #d1d9e6,
-                inset -4px -4px 8px #ffffff;
-            background: #e6e6e6;
+            box-shadow: inset 3px 3px 6px #d1d9e6, inset -3px -3px 6px #ffffff;
         }
-
-        .active-nav {
-            background: linear-gradient(145deg, #e6e6e6, #ffffff);
-            box-shadow: 
-                inset 4px 4px 8px #d1d9e6,
-                inset -4px -4px 8px #ffffff;
+        .active-tab {
+            background: #0078D4;
+            box-shadow: inset 4px 4px 8px #1f3f73, inset -4px -4px 8px #ffffff;
+            color: white;
         }
-
-        .hidden {
-            display: none;
+        .sidebar {
+            background-color: #0078D4; 
+            color: white;
+        }
+        .sidebar .clay-button {
+            color: white; 
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .sidebar h2, .sidebar p, .sidebar .nav-item {
+            color: white; 
         }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="flex h-screen">
       
-        <div class="clay-card w-64 flex flex-col p-4 m-4">
+        <div class="sidebar clay-card w-64 flex flex-col p-4 m-4">
             <div class="mb-8">
-                <h2 class="text-xl font-bold text-gray-800">Marketing Executive</h2>
-                <p class="text-sm text-gray-600">Dashboard</p>
+                <h2 class="text-xl font-bold">Marketing Executive</h2>
+                <p class="text-sm">Dashboard</p>
             </div>
             <nav>
                 <ul class="space-y-2">
