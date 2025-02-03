@@ -14,129 +14,128 @@
         .clay-card {
             background: rgba(255, 255, 255, 0.9);
             border-radius: 20px;
-            box-shadow: 8px 8px 16px #d1d9e6,
-                       -8px -8px 16px #ffffff;
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
             padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
         .clay-button {
             background: #ffffff;
             border-radius: 10px;
-            box-shadow: 4px 4px 8px #d1d9e6,
-                       -4px -4px 8px #ffffff;
+            box-shadow: 4px 4px 8px #d1d9e6, -4px -4px 8px #ffffff;
             transition: all 0.3s ease;
         }
         .clay-button:hover {
-            box-shadow: inset 4px 4px 8px #d1d9e6,
-                       inset -4px -4px 8px #ffffff;
+            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
         }
         .active-tab {
-            box-shadow: inset 4px 4px 8px #d1d9e6,
-                       inset -4px -4px 8px #ffffff;
+            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
             background: #f0f4f8;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #0078D4;
+            color: white;
+            padding: 20px;
+        }
+        .sidebar .clay-button {
+            background: #0078D4;
+            color: white;
+            box-shadow: none;
+        }
+        .sidebar .clay-button:hover {
+            background: #005bb5;
+        }
+        .main-content {
+            margin-left: 270px; 
+            padding: 20px;
         }
     </style>
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen">
- 
-        <div class="clay-card w-64 m-4 flex flex-col">
-            <div class="text-2xl font-bold mb-8 text-center text-blue-600">SKY ARGO MARKETING</div>
-            <nav class="space-y-2">
-                <button class="clay-button w-full p-3 text-left active-tab" onclick="switchTab('dashboard')">
-                    <i class="bi bi-grid-1x2-fill mr-2"></i> Dashboard
-                </button>
-                <button class="clay-button w-full p-3 text-left" onclick="switchTab('dealers')">
-                    <i class="bi bi-people-fill mr-2"></i> Dealers
-                </button>
-                <button class="clay-button w-full p-3 text-left" onclick="switchTab('products')">
-                    <i class="bi bi-box-seam-fill mr-2"></i> Products
-                </button>
-                <button class="clay-button w-full p-3 text-left" onclick="switchTab('orders')">
-                    <i class="bi bi-cart-fill mr-2"></i> Orders
-                </button>
-                <button class="clay-button w-full p-3 text-left" onclick="switchTab('users')">
-                    <i class="bi bi-person-fill-gear mr-2"></i> User Management
-                </button>
-                <button class="clay-button w-full p-3 text-left" onclick="switchTab('reports')">
-                    <i class="bi bi-file-earmark-text-fill mr-2"></i> Reports
-                </button>
-            </nav>
-        </div>
+    <div class="sidebar">
+        <div class="text-2xl font-bold mb-8 text-center">SKY ARGO MARKETING</div>
+        <nav class="space-y-2">
+            <button class="clay-button w-full p-3 text-left active-tab" onclick="switchTab('dashboard')">
+                <i class="bi bi-grid-1x2-fill mr-2"></i> Dashboard
+            </button>
+            <button class="clay-button w-full p-3 text-left" onclick="switchTab('dealers')">
+                <i class="bi bi-people-fill mr-2"></i> Dealers
+            </button>
+            <button class="clay-button w-full p-3 text-left" onclick="switchTab('products')">
+                <i class="bi bi-box-seam-fill mr-2"></i> Products
+            </button>
+            <button class="clay-button w-full p-3 text-left" onclick="switchTab('orders')">
+                <i class="bi bi-cart-fill mr-2"></i> Orders
+            </button>
+            <button class="clay-button w-full p-3 text-left" onclick="switchTab('users')">
+                <i class="bi bi-person-fill-gear mr-2"></i> User Management
+            </button>
+            <button class="clay-button w-full p-3 text-left" onclick="switchTab('reports')">
+                <i class="bi bi-file-earmark-text-fill mr-2"></i> Reports
+            </button>
+        </nav>
+    </div>
 
-
-        <div class="flex-1 p-4 overflow-auto">
-
-            <div id="dashboard" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="clay-card">
-                        <h3 class="text-lg font-semibold mb-2">Pending Approvals</h3>
-                        <div class="text-3xl font-bold text-blue-600">12</div>
-                        <p class="text-gray-600">Dealer and Product requests</p>
-                    </div>
-                    <div class="clay-card">
-                        <h3 class="text-lg font-semibold mb-2">Active Orders</h3>
-                        <div class="text-3xl font-bold text-green-600">28</div>
-                        <p class="text-gray-600">Orders in progress</p>
-                    </div>
-                    <div class="clay-card">
-                        <h3 class="text-lg font-semibold mb-2">Total Revenue</h3>
-                        <div class="text-3xl font-bold text-purple-600">₹82,45,890</div>
-                        <p class="text-gray-600">This month</p>
-                    </div>
-                </div>
-
+    <div class="main-content">
+        <div id="dashboard" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="clay-card">
-                    <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
-                            <div>
-                                <p class="font-medium">New Dealer Registration</p>
-                                <p class="text-sm text-gray-600">MD Traders submitted registration</p>
-                            </div>
-                            <button class="clay-button px-4 py-2 text-blue-600">Review</button>
-                        </div>
-                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
-                            <div>
-                                <p class="font-medium">Price Adjustment Request</p>
-                                <p class="text-sm text-gray-600">Product: Premium Seeds</p>
-                            </div>
-                            <button class="clay-button px-4 py-2 text-blue-600">Review</button>
-                        </div>
-                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Pending Approvals</h3>
+                    <div class="text-3xl font-bold text-blue-600">12</div>
+                    <p class="text-gray-600">Dealer and Product requests</p>
+                </div>
+                <div class="clay-card">
+                    <h3 class="text-lg font-semibold mb-2">Active Orders</h3>
+                    <div class="text-3xl font-bold text-green-600">28</div>
+                    <p class="text-gray-600">Orders in progress</p>
+                </div>
+                <div class="clay-card">
+                    <h3 class="text-lg font-semibold mb-2">Total Revenue</h3>
+                    <div class="text-3xl font-bold text-purple-600">₹82,45,890</div>
+                    <p class="text-gray-600">This month</p>
                 </div>
             </div>
 
-            <div id="dealers" class="hidden">
-        
-            </div>
-            <div id="products" class="hidden">
-       
-            </div>
-            <div id="orders" class="hidden">
-
-            </div>
-            <div id="users" class="hidden">
-  
-            </div>
-            <div id="reports" class="hidden">
-       
+            <div class="clay-card">
+                <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <div>
+                            <p class="font-medium">New Dealer Registration</p>
+                            <p class="text-sm text-gray-600">MD Traders submitted registration</p>
+                        </div>
+                        <button class="clay-button px-4 py-2 text-blue-600">Review</button>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <div>
+                            <p class="font-medium">Price Adjustment Request</p>
+                            <p class="text-sm text-gray-600">Product: Premium Seeds</p>
+                        </div>
+                        <button class="clay-button px-4 py-2 text-blue-600">Review</button>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div id="dealers" class="hidden"></div>
+        <div id="products" class="hidden"></div>
+        <div id="orders" class="hidden"></div>
+        <div id="users" class="hidden"></div>
+        <div id="reports" class="hidden"></div>
     </div>
 
     <script>
         function switchTab(tabId) {
-    
             document.querySelectorAll('div[id]').forEach(div => {
                 if(['dashboard', 'dealers', 'products', 'orders', 'users', 'reports'].includes(div.id)) {
                     div.classList.add('hidden');
                 }
             });
-            
-
             document.getElementById(tabId).classList.remove('hidden');
-            
             document.querySelectorAll('.clay-button').forEach(button => {
                 button.classList.remove('active-tab');
             });
