@@ -180,35 +180,36 @@
 
     <div class="categories">
         <div class="category-item" onclick="filterByCategory('All')">All</div>
-        <div class="category-item" onclick="filterByCategory('Fruits')">Fruits</div>
-        <div class="category-item" onclick="filterByCategory('Vegetables')">Vegetables</div>
-        <div class="category-item" onclick="filterByCategory('Dairy')">Dairy</div>
+        <div class="category-item" onclick="filterByCategory('Irrigation')">Irrigation</div>
+        <div class="category-item" onclick="filterByCategory('Agriculture')">Agriculture</div>
+        <div class="category-item" onclick="filterByCategory('Others')">Others</div>
     </div>
 
     <div class="grid grid-cols-products gap-4 p-4" id="product-list">
-        <div class="clay-card flex flex-col items-center" data-category="Fruits">
-            <img src="https://img.freepik.com/premium-photo/product-shots-apples-high-quality-4k-ultra-hd_670382-78001.jpg" alt="Apple" class="w-full rounded-md">
-            <div class="mt-2 font-semibold text-lg text-center">Apple</div>
-            <div class="text-gray-600 text-sm text-center">Fresh Red Apple</div>
-            <div class="text-sky-600 font-bold mt-2 text-center">130.00 ₹</div>
-            <button class="clay-button px-4 py-2 mt-2" onclick="addToCart('Apple', 130, 'https://img.freepik.com/premium-photo/product-shots-apples-high-quality-4k-ultra-hd_670382-78001.jpg')">Add to Cart</button>
+        <div class="clay-card flex flex-col items-center" data-category="Irrigation">
+            <img src="image/flat_drip.jpeg" alt="Flat Drip" class="w-full rounded-md">
+            <div class="mt-2 font-semibold text-lg text-center">Flat Drip</div>
+            <div class="text-gray-600 text-sm text-center">High-quality Flat Drip</div>
+            <div class="text-sky-600 font-bold mt-2 text-center">100 ₹</div>
+            <button class="clay-button px-4 py-2 mt-2" onclick="addToCart('Flat Drip', 100, 'image/flat_drip.jpeg')">Add to Cart</button>
         </div>
-        <div class="clay-card flex flex-col items-center" data-category="Vegetables">
-            <img src="https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202408070949.jpg?im=Resize=(1000,1000)" alt="Carrot" class="w-full rounded-md">
-            <div class="mt-2 font-semibold text-lg text-center">Carrot</div>
-            <div class="text-gray-600 text-sm text-center">Organic Carrot</div>
+
+        <div class="clay-card flex flex-col items-center" data-category="Irrigation">
+            <img src="image/normal_drip.jpeg" alt="Normal Drip" class="w-full rounded-md">
+            <div class="mt-2 font-semibold text-lg text-center">Normal Drip</div>
+            <div class="text-gray-600 text-sm text-center">Standard Normal Drip</div>
+            <div class="text-sky-600 font-bold mt-2 text-center">80 ₹</div>
+            <button class="clay-button px-4 py-2 mt-2" onclick="addToCart('Normal Drip', 80, 'image/normal_drip.jpeg')">Add to Cart</button>
+        </div>
+
+        <div class="clay-card flex flex-col items-center" data-category="Agriculture">
+            <img src="image/mulch_film.jpeg" alt="Mulch Film" class="w-full rounded-md">
+            <div class="mt-2 font-semibold text-lg text-center">Mulch Film</div>
+            <div class="text-gray-600 text-sm text-center">Durable Mulch Film</div>
             <div class="text-sky-600 font-bold mt-2 text-center">50 ₹</div>
-            <button class="clay-button px-4 py-2 mt-2" onclick="addToCart('Carrot', 50, 'https://www.jiomart.com/images/product/original/590003546/carrot-orange-500-g-product-images-o590003546-p590003546-0-202408070949.jpg?im=Resize=(1000,1000)')">Add to Cart</button>
+            <button class="clay-button px-4 py-2 mt-2" onclick="addToCart('Mulch Film', 50, 'image/mulch_film.jpeg')">Add to Cart</button>
         </div>
-        
-        <div class="clay-card flex flex-col items-center" data-category="Dairy">
-            <img src="image/milk.jpeg" alt="Milk" class="w-full rounded-md">
-            <div class="mt-2 font-semibold text-lg text-center">Milk</div>
-            <div class="text-gray-600 text-sm text-center">Amul Toned Milk</div>
-            <div class="text-sky-600 font-bold mt-2 text-center">30 ₹</div>
-            <button class="clay-button px-4 py-2 mt-2" onclick="addToCart('Milk', 30, 'image/milk.jpeg')">Add to Cart</button>
-        </div>
-        
+    </div>
 
     <script>
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
